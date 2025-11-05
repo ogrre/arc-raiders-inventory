@@ -18,6 +18,39 @@
                 </div>
             @endif
 
+            {{-- Inventory Statistics --}}
+            @if ($inventory->isNotEmpty())
+                @php
+                    $totalValue = $inventory->sum(function($entry) {
+                        return ($entry['item']['value'] ?? 0) * $entry['quantity'];
+                    });
+                    $totalWeight = $inventory->sum(function($entry) {
+                        return ($entry['item']['weightKg'] ?? 0) * $entry['quantity'];
+                    });
+                    $uniqueItems = $inventory->count();
+                    $totalQuantity = $inventory->sum('quantity');
+                @endphp
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-blue-700">{{ $uniqueItems }}</div>
+                        <div class="text-sm text-blue-600">Unique Items</div>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-green-700">{{ $totalQuantity }}</div>
+                        <div class="text-sm text-green-600">Total Quantity</div>
+                    </div>
+                    <div class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-yellow-700">{{ number_format($totalValue) }}</div>
+                        <div class="text-sm text-yellow-600">Total Value (credits)</div>
+                    </div>
+                    <div class="bg-purple-50 border-2 border-purple-200 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-purple-700">{{ number_format($totalWeight, 1) }}</div>
+                        <div class="text-sm text-purple-600">Total Weight (kg)</div>
+                    </div>
+                </div>
+            @endif
+
             {{-- Filters and View Toggle --}}
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">

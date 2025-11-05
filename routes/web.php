@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\HideoutModuleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,6 +27,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Items routes (database/wiki)
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/{gameId}', [ItemController::class, 'show'])->name('items.show');
+
+    // Projects routes
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects/{projectId}', [ProjectController::class, 'show'])->name('projects.show');
+
+    // Hideout modules routes
+    Route::get('/hideout', [HideoutModuleController::class, 'index'])->name('hideout.index');
+    Route::get('/hideout/{moduleId}', [HideoutModuleController::class, 'show'])->name('hideout.show');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
